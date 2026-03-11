@@ -4,6 +4,10 @@ import http from "http"
 import { attachWebSocketServer } from "./ws/server.js"
 
 const PORT = Number(process.env.PORT || 8000)
+if (!Number.isInteger(PORT) || PORT < 0 || PORT > 65535) {
+    console.error(`Invalid PORT: "${process.env.PORT}". Must be an integer between 0 and 65535.`)
+    process.exit(1)
+}
 const HOST = process.env.HOST || '0.0.0.0'
 const app = express()
 
