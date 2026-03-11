@@ -15,6 +15,7 @@ export const matches = pgTable('matches', {
     createdAt: timestamp('created_at').defaultNow().notNull(),
 });
 
+
 export const commentary = pgTable('commentary', {
     id: serial('id').primaryKey(),
     matchId: integer('match_id').references(() => matches.id).notNull(),
