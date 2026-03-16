@@ -16,12 +16,13 @@ const server = http.createServer(app)
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(securityMiddleware());
 
 app.get('/', (req, res) => {
     res.send('hello from Express server!')
 })
 
-app.use(securityMiddleware());
+
 
 app.use("/matches", matchRouter);
 
