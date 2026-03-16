@@ -2,6 +2,7 @@ import express from "express"
 import { matchRouter } from "./routes/matches.js"
 import http from "http"
 import { attachWebSocketServer } from "./ws/server.js"
+import { securityMiddleware } from "./arcjet.js"
 
 const PORT = Number(process.env.PORT || 8000)
 if (!Number.isInteger(PORT) || PORT < 0 || PORT > 65535) {
@@ -19,6 +20,8 @@ app.use(express.urlencoded({ extended: true }))
 app.get('/', (req, res) => {
     res.send('hello from Express server!')
 })
+
+app.use(securityMiddleware());
 
 app.use("/matches", matchRouter);
 
