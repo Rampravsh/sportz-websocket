@@ -52,6 +52,8 @@ function broadcastToMatch(matchId,payload){
     }
 }
 
+const MAX_SUBS_PER_SOCKET = 100;
+
 function handleMessage(socket,data){
     let message;
     try {
@@ -62,6 +64,10 @@ function handleMessage(socket,data){
         return;
     }
     if(message?.type === "subscribe" && Number.isInteger(message.matchId)){
+        if (socket.subscriptions.size >= MAX_SUBS_PER_SOCKET && !socket.subscriptions.has(message.matchId)) {
+            sendJson(socket, { type: "error", reason: "subscription_limit_reached" });
+            return;
+        }
         subscribe(message.matchId,socket);
         socket.subscriptions.add(message.matchId);
         sendJson(socket,{type:"subscribed",matchId:message.matchId});
